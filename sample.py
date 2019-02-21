@@ -9,10 +9,11 @@ import sys
 import tensorflow as tf
 from tensorflow import keras
 import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.image as mpimg
+#import matplotlib.pyplot as plt
+#import matplotlib.image as mpimg
 from tensorflow.keras.preprocessing import image
 #import dataset
+tf.logging.set_verbosity(tf.logging.INFO)
 
 DATUMS_PATH = os.getenv('DATUMS_PATH', None)
 DATASET_NAME = os.getenv('DATASET_NAME', None)
@@ -34,6 +35,7 @@ IMAGE_SIZE = 224
 
 #Image data generator
 train_datagen = keras.preprocessing.image.ImageDataGenerator(horizontal_flip = True,width_shift_range = 0.1,height_shift_range = 0.1,rescale = 1./255)
+
 validation_datagen = keras.preprocessing.image.ImageDataGenerator(horizontal_flip = True,width_shift_range = 0.1,height_shift_range = 0.1,rescale = 1./255)
 
 #flow images in batch
@@ -72,4 +74,6 @@ steps_per_epoch = train_generator.n // BATCH_SIZE
 validation_steps = validation_generator.n // BATCH_SIZE
 
 history = model.fit_generator(train_generator,steps_per_epoch=steps_per_epoch,epochs=EPOCHS,validation_data=validation_generator,validation_steps=validation_steps,callbacks=callbacks)
+logging_hook = logger_hook({"history":history})
 
+print(history)
