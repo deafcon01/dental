@@ -1,7 +1,7 @@
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
-from dkube import dkubeLoggerHook as logger_hook
+#from dkube import dkubeLoggerHook as logger_hook
 import argparse
 import os
 import sys
@@ -14,7 +14,7 @@ import numpy as np
 from tensorflow.keras.preprocessing import image
 #import dataset
 #tf.logging.set_verbosity(tf.logging.INFO)
-
+"""
 DATUMS_PATH = os.getenv('DATUMS_PATH', None)
 DATASET_NAME = os.getenv('DATASET_NAME', None)
 TF_TRAIN_STEPS = int(os.getenv('TF_TRAIN_STEPS',1000))
@@ -46,7 +46,8 @@ validation_generator = validation_datagen.flow_from_directory(VAL,target_size = 
 #SET CALLBACKS
 callbacks = [tf.keras.callbacks.ReduceLROnPlateau(monitor='val_loss',factor = 0.2, patience = 3, min_lr =0.001),
         tf.keras.callbacks.EarlyStopping(monitor='val_acc',patience = 3)]
-
+"""
+IMAGE_SIZE=224
 #creating base model
 image_shape = (IMAGE_SIZE,IMAGE_SIZE,3)
 base_model = tf.keras.applications.vgg19.VGG19(input_shape = image_shape,include_top=False,weights = 'imagenet')
@@ -58,10 +59,10 @@ model = tf.keras.Sequential([
   keras.layers.GlobalAveragePooling2D(),
   keras.layers.Dense(4, activation='softmax')
 ])
-
+print(model.summary)
 fine_tune_at = 3
 #print(len(base_model.layers)) #175 for resnet50 #22 for vgg19
-
+"""
 base_model.trainable = True
 
 for layer in base_model.layers[:fine_tune_at]:
@@ -77,3 +78,4 @@ history = model.fit_generator(train_generator,steps_per_epoch=steps_per_epoch,ep
 #logging_hook = logger_hook({"history":history})
 
 print(history)
+"""
